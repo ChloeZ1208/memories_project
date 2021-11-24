@@ -3,7 +3,11 @@ import bodyParser  from 'body-parser';
 import mongoose from 'mongoose';
 import cors from 'cors';
 
+import postRoutes from './routes/posts.js'
+
 const app = express();
+
+app.use('/posts', postRoutes); //posts can only be accessed w/ localhost:5000/posts
 
 app.use(express.json({ limit: "30mb", extended: true })); // set pic upload limit
 app.use(express.urlencoded({ limit: "30mb", extended: true }));
