@@ -7,11 +7,10 @@ import postRoutes from './routes/posts.js'
 
 const app = express();
 
-app.use('/posts', postRoutes); //posts can only be accessed w/ localhost:5000/posts
-
 app.use(express.json({ limit: "30mb", extended: true })); // set pic upload limit
 app.use(express.urlencoded({ limit: "30mb", extended: true }));
-app.use(cors());
+app.use(cors()); // enable the server to respond to preflight requests
+app.use('/posts', postRoutes); //posts can only be accessed w/ localhost:5000/posts
 
 const CONNECTION_URL = 'mongodb+srv://chloeMemories:chloeMemories@cluster0.my7yu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const PORT = process.env.PORT || 5000;
