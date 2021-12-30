@@ -105,3 +105,5 @@ dist
 
 # MACBOOK file
 .DS_Store
+
+node_modules
