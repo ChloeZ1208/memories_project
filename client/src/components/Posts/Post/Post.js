@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardActions, CardContent, CardMedia, Button, Typography } from '@material-ui/core/';
+import { Card, CardActions, CardContent, CardMedia, Button, Typography, ButtonBase } from '@material-ui/core/';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
@@ -7,11 +7,13 @@ import ThumbUpAltOutlined from '@material-ui/icons/ThumbUpAltOutlined';
 import moment from 'moment';
 import { useDispatch } from 'react-redux';
 import useStyles from './styles'
+import { useNavigate } from 'react-router-dom'
 import { deletePost, likePost } from '../../../actions/post';
 
 const Post = ( { post, setCurrentId } ) => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('profile'));
 
 
@@ -27,9 +29,19 @@ const Post = ( { post, setCurrentId } ) => {
 
     return <><ThumbUpAltOutlined fontSize="small" />&nbsp;Like</>;
   };
+
+  const openPost = () => {
+    navigate(`/posts/${post._id}`);
+  }
   
   return (
-    <Card className={classes.card}>
+    <Card className={classes.card} raised elevation={6}>
+      <ButtonBase 
+      className={classes.cardAction} 
+      onClick={openPost}
+      component="span"
+      name="test" 
+      >
       <CardMedia className={classes.media} image={post.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={post.title} />
       <div className={classes.overlay}>
         <Typography variant="h6">{post.name}</Typography>
@@ -39,7 +51,10 @@ const Post = ( { post, setCurrentId } ) => {
         <Button 
           style={{ color: 'white' }} 
           size="small" 
-          onClick={() => {setCurrentId(post._id)}}>
+          onClick={(e) => {
+            e.stopPropagation();
+            setCurrentId(post._id);
+            }}>
             {(user?.result?.googleId === post?.creator || user?.result?._id === post?.creator) && (
               <MoreHorizIcon fontSize="default" />
             )}
@@ -52,6 +67,7 @@ const Post = ( { post, setCurrentId } ) => {
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">{post.message}</Typography>
       </CardContent>
+      </ButtonBase>
       <CardActions className={classes.cardActions}>
         <Button size="small" color="primary" disabled={!user?.result} onClick={() => dispatch(likePost(post._id))}>
           <Likes />

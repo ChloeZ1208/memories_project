@@ -26,17 +26,27 @@ const Auth = () => {
     setShowPassword(false);
     setIsSignUp(!isSignUp);
   }
-  
+
+  // validate if password is equal to confirmPassword
+  const validate = (password, confirmPassword) => {
+    if (password !== confirmPassword) {
+      alert("Passwords don't match")
+      return false;
+    }
+    return true;
+  }
   const handleSubmit = (e) => {
     e.preventDefault(); // not to do the default refresh of the browser
 
-    if (isSignUp) {
-      dispatch(signup(formData, navigate)) // pass navigate so that we can navigate once sth happens
-      // dispatch signup action-api-backend
-    } else {
-      // dispatch login action-api-backend
-      dispatch(login(formData, navigate))
-    }
+      if (isSignUp) {
+        if (validate(formData.password, formData.confirmPassword)){
+          dispatch(signup(formData, navigate)) // pass navigate so that we can navigate once sth happens
+          // dispatch signup action-api-backend
+        }
+      } else {
+        // dispatch login action-api-backend
+        dispatch(login(formData, navigate))
+      }
   };
 
   const handleChange = (e) => {

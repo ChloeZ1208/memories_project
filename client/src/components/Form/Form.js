@@ -3,14 +3,17 @@ import { TextField, Button, Paper, Typography } from '@material-ui/core';
 import FileBase from 'react-file-base64';
 import useStyles from './styles'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom';
 import { createPost, updatePost } from '../../actions/post';
 
 const Form = ({ currentId, setCurrentId }) => {
-  const [postData, setPostData] = useState({ title: '', message: '', tags: '', selectedFile: ''});
   const classes = useStyles();
-  // only return the post that we selected(the same id)
-  const post = useSelector((state) => currentId ? state.posts.find((p) => p._id === currentId): null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  
+  const [postData, setPostData] = useState({ title: '', message: '', tags: '', selectedFile: ''});
+  const post = useSelector((state) => currentId ? state.posts.posts.find((p) => p._id === currentId): null);
+  // only return the post that we selected(the same id)
   const user = JSON.parse(localStorage.getItem('profile'));
 
   const handleSubmit = async (e) => {
@@ -18,7 +21,8 @@ const Form = ({ currentId, setCurrentId }) => {
     if(currentId) {
       dispatch(updatePost(currentId, { ...postData, name: user?.result?.name }));
     } else {
-      dispatch(createPost({ ...postData, name: user?.result?.name }))
+      dispatch(createPost({ ...postData, name: user?.result?.name }));
+      navigate('/');
     }
     clear()
   }
