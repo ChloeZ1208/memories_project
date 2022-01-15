@@ -1,7 +1,7 @@
 # Memories
 A full stack MERN social media web app where users post and share their memories, using React+Redux, Node.js, Express and MongoDB.
 
-## Demo
+## Website - URL
 https://memories-chloe.netlify.app
 
 ## Features
